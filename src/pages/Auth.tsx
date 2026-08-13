@@ -127,17 +127,8 @@ export default function Auth() {
       toast({ title: "Nome obrigatório", description: "Informe seu nome completo", variant: "destructive" });
       return;
     }
-    if (selectedRoles.length === 0) {
-      toast({ title: "Selecione um cargo", description: "Escolha pelo menos SDR ou Closer", variant: "destructive" });
-      return;
-    }
     setLoading(true);
-    const { error } = await signUp(
-      email,
-      password,
-      fullName.trim(),
-      selectedRoles as ("sdr" | "closer" | "admin")[],
-    );
+    const { error } = await signUp(email, password, fullName.trim());
     if (error) {
       setLoading(false);
       toast({ title: "Erro ao cadastrar", description: error, variant: "destructive" });

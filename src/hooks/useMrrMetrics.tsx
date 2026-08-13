@@ -78,7 +78,8 @@ export function useMrrMetrics(monthsBack: number = 6): MrrMetrics {
   useRealtimeTables(["deals", "clients"], fetchAll);
 
   const series = useMemo<MrrMonth[]>(() => {
-    const now = new Date();
+    const [currentYear, currentMonth] = monthKey.split("-").map(Number);
+    const now = new Date(currentYear, currentMonth - 1, 1);
     const months: MrrMonth[] = [];
     for (let i = monthsBack - 1; i >= 0; i--) {
       const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
@@ -128,8 +129,6 @@ export function useMrrMetrics(monthsBack: number = 6): MrrMetrics {
       });
     }
     return months;
-    // monthKey garante o recálculo quando o mês vira
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [deals, churned, monthsBack, monthKey]);
 
 

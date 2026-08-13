@@ -242,8 +242,6 @@ const Index = () => {
       if (diff >= 0 && diff < 7) buckets[diff].value++;
     });
     return buckets.map(({ name, value }) => ({ name, value }));
-    // weekKey força o recálculo quando a semana vira
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [deals, weekKey]);
 
   const sellers = useMemo(() => {

@@ -150,10 +150,11 @@ export default function TV() {
   const [loading, setLoading] = useState(true);
   const [lastUpdate, setLastUpdate] = useState(new Date());
 
-  const { now: currentNow, monthKey } = useCurrentMonth();
-  // monthKey força o recálculo dos limites quando o mês vira
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const bounds = useMemo(() => buildBoundsFrom(currentNow), [monthKey]);
+  const { monthKey } = useCurrentMonth();
+  const bounds = useMemo(() => {
+    const [year, month] = monthKey.split("-").map(Number);
+    return buildBoundsFrom(new Date(year, month - 1, 15));
+  }, [monthKey]);
 
 
   const fetchTvData = useCallback(async () => {

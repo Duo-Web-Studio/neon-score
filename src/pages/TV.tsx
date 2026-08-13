@@ -568,11 +568,12 @@ export default function TV() {
 
                           <div className="flex min-w-0 items-center gap-3">
                             <div className="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-primary/15 text-sm font-black text-primary">
-                              {seller.avatarUrl ? (
-                                <img src={seller.avatarUrl} alt={seller.name} className="h-full w-full object-cover" />
-                              ) : (
-                                seller.initials
-                              )}
+                              <AvatarImage
+                                value={seller.avatarUrl}
+                                alt={seller.name}
+                                className="h-full w-full object-cover"
+                                fallback={<>{seller.initials}</>}
+                              />
                             </div>
                             <div className="min-w-0 flex-1">
                               <p className="truncate text-lg font-bold text-foreground leading-tight xl:text-xl">{seller.name}</p>

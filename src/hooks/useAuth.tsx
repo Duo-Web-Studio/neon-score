@@ -84,11 +84,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return { error: null };
   };
 
-  const signUp = async (email: string, password: string, fullName: string, roles?: AppRole[]) => {
+  // Roles are never self-assigned: only an admin can grant SDR/Closer/Admin
+  // through the admin-only role management flow after approving the account.
+  const signUp = async (email: string, password: string, fullName: string) => {
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
-      options: { data: { full_name: fullName, roles: roles ?? [] } },
+      options: { data: { full_name: fullName } },
     });
     if (error) return { error: error.message, userId: null };
     if (data.user && Array.isArray(data.user.identities) && data.user.identities.length === 0) {

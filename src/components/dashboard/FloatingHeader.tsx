@@ -73,11 +73,12 @@ export function FloatingHeader({ role, onRoleChange }: FloatingHeaderProps) {
           title="Meu perfil"
           className="flex h-8 w-8 items-center justify-center overflow-hidden rounded-xl bg-primary/20 text-primary ring-1 ring-primary/30 transition hover:ring-primary/60"
         >
-          {profile?.avatar_url ? (
-            <img src={profile.avatar_url} alt="Perfil" className="h-full w-full object-cover" />
-          ) : (
-            <User className="h-4 w-4" />
-          )}
+          <AvatarImage
+            value={profile?.avatar_url}
+            alt="Perfil"
+            className="h-full w-full object-cover"
+            fallback={<User className="h-4 w-4" />}
+          />namespace_placeholder
         </Link>
 
         <button

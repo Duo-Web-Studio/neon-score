@@ -125,6 +125,7 @@ export function AvatarUploader({ onChanged }: Props) {
     setUploading(true);
     try {
       await supabase.storage.from("avatars").remove([`${user.id}/avatar.jpg`]);
+      clearAvatarUrlCache(`${user.id}/avatar.jpg`);
       const { error } = await supabase.from("profiles").update({ avatar_url: null }).eq("id", user.id);
       if (error) throw error;
       setPreviewUrl(null);

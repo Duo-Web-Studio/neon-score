@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import { Eye, EyeOff, Loader2, CheckCircle2 } from "lucide-react";
-import { Checkbox } from "@/components/ui/checkbox";
 import { useToast } from "@/hooks/use-toast";
 import nextLogo from "@/assets/next-logo.jpg";
 
@@ -84,19 +83,12 @@ export default function Auth() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [fullName, setFullName] = useState("");
-  const [selectedRoles, setSelectedRoles] = useState<string[]>([]);
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [signupSuccess, setSignupSuccess] = useState(false);
   const { signIn, signUp } = useAuth();
   const { toast } = useToast();
   const navigate = useNavigate();
-
-  const toggleRole = (role: string) => {
-    setSelectedRoles((prev) =>
-      prev.includes(role) ? prev.filter((r) => r !== role) : [...prev, role]
-    );
-  };
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -127,17 +119,8 @@ export default function Auth() {
       toast({ title: "Nome obrigatório", description: "Informe seu nome completo", variant: "destructive" });
       return;
     }
-    if (selectedRoles.length === 0) {
-      toast({ title: "Selecione um cargo", description: "Escolha pelo menos SDR ou Closer", variant: "destructive" });
-      return;
-    }
     setLoading(true);
-    const { error } = await signUp(
-      email,
-      password,
-      fullName.trim(),
-      selectedRoles as ("sdr" | "closer" | "admin")[],
-    );
+    const { error } = await signUp(email, password, fullName.trim());
     if (error) {
       setLoading(false);
       toast({ title: "Erro ao cadastrar", description: error, variant: "destructive" });
@@ -266,26 +249,9 @@ export default function Auth() {
           </div>
 
           {tab === "signup" && (
-            <div>
-              <label className="mb-2 block text-sm font-medium text-foreground">Cargo</label>
-              <div className="flex gap-4">
-                <label className="flex items-center gap-2 cursor-pointer">
-                  <Checkbox
-                    checked={selectedRoles.includes("sdr")}
-                    onCheckedChange={() => toggleRole("sdr")}
-                  />
-                  <span className="text-sm text-foreground">SDR</span>
-                </label>
-                <label className="flex items-center gap-2 cursor-pointer">
-                  <Checkbox
-                    checked={selectedRoles.includes("closer")}
-                    onCheckedChange={() => toggleRole("closer")}
-                  />
-                  <span className="text-sm text-foreground">Closer</span>
-                </label>
-              </div>
-              <p className="mt-1 text-xs text-muted-foreground">Selecione um ou ambos</p>
-            </div>
+            <p className="rounded-xl border border-border/50 bg-muted/30 px-4 py-3 text-xs text-muted-foreground">
+              Seu cargo (SDR ou Closer) será definido pelo administrador ao aprovar o acesso.
+            </p>
           )}
 
           <button

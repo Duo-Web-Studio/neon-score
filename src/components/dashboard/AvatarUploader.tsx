@@ -1,9 +1,10 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Camera, Loader2, Trash2, User } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/hooks/use-toast";
+import { clearAvatarUrlCache, resolveAvatarUrl } from "@/lib/avatarUrl";
 
 const MAX_BYTES = 12 * 1024 * 1024; // 12 MB
 const ACCEPTED = ["image/jpeg", "image/jpg", "image/png", "image/webp"];
@@ -63,8 +64,18 @@ async function processImage(file: File): Promise<Blob> {
 export function AvatarUploader({ onChanged }: Props) {
   const { user, profile } = useAuth();
   const [uploading, setUploading] = useState(false);
-  const [previewUrl, setPreviewUrl] = useState<string | null>(profile?.avatar_url ?? null);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    let active = true;
+    resolveAvatarUrl(profile?.avatar_url).then((url) => {
+      if (active) setPreviewUrl(url);
+    });
+    return () => {
+      active = false;
+    };
+  }, [profile?.avatar_url]);
 
   const handleFile = async (file: File) => {
     if (!user) return;
@@ -90,17 +101,16 @@ export function AvatarUploader({ onChanged }: Props) {
         .upload(path, blob, { upsert: true, contentType: "image/jpeg", cacheControl: "3600" });
       if (upErr) throw upErr;
 
-      const { data } = supabase.storage.from("avatars").getPublicUrl(path);
-      const url = `${data.publicUrl}?v=${Date.now()}`;
+      clearAvatarUrlCache(path);
 
       const { error: updErr } = await supabase
         .from("profiles")
-        .update({ avatar_url: url })
+        .update({ avatar_url: path })
         .eq("id", user.id);
       if (updErr) throw updErr;
 
-      setPreviewUrl(url);
-      onChanged?.(url);
+      setPreviewUrl(await resolveAvatarUrl(path));
+      onChanged?.(path);
       toast({ title: "Foto atualizada", description: "Sua foto de perfil foi atualizada." });
     } catch (e) {
       toast({ title: "Erro ao enviar", description: (e as Error).message ?? "Tente novamente.", variant: "destructive" });
@@ -115,6 +125,7 @@ export function AvatarUploader({ onChanged }: Props) {
     setUploading(true);
     try {
       await supabase.storage.from("avatars").remove([`${user.id}/avatar.jpg`]);
+      clearAvatarUrlCache(`${user.id}/avatar.jpg`);
       const { error } = await supabase.from("profiles").update({ avatar_url: null }).eq("id", user.id);
       if (error) throw error;
       setPreviewUrl(null);

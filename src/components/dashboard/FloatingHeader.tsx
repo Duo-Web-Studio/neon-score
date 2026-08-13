@@ -3,6 +3,7 @@ import { Bell, User, LogOut } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import nextLogo from "@/assets/next-logo.jpg";
+import { AvatarImage } from "@/components/AvatarImage";
 
 type Role = "SDR" | "Closer";
 
@@ -73,11 +74,12 @@ export function FloatingHeader({ role, onRoleChange }: FloatingHeaderProps) {
           title="Meu perfil"
           className="flex h-8 w-8 items-center justify-center overflow-hidden rounded-xl bg-primary/20 text-primary ring-1 ring-primary/30 transition hover:ring-primary/60"
         >
-          {profile?.avatar_url ? (
-            <img src={profile.avatar_url} alt="Perfil" className="h-full w-full object-cover" />
-          ) : (
-            <User className="h-4 w-4" />
-          )}
+          <AvatarImage
+            value={profile?.avatar_url}
+            alt="Perfil"
+            className="h-full w-full object-cover"
+            fallback={<User className="h-4 w-4" />}
+          />
         </Link>
 
         <button

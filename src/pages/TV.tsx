@@ -6,6 +6,7 @@ import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/dashboard/AppSidebar";
 import { useCurrentMonth } from "@/hooks/useCurrentMonth";
 import nextLogo from "@/assets/next-logo.jpg";
+import { AvatarImage } from "@/components/AvatarImage";
 
 interface Goal {
   id: string;

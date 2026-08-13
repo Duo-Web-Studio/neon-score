@@ -158,7 +158,7 @@ const Metas = () => {
 
   const myGoals = goals.filter((g) => g.target_user_id === user?.id && isActive(g));
   const companyGoals = goals.filter((g) => g.target_user_id === null && isActive(g));
-  const allUserGoals = useMemo(() => [...myGoals, ...companyGoals], [goals, user?.id]); // eslint-disable-line react-hooks/exhaustive-deps
+  const allUserGoals = useMemo(() => [...myGoals, ...companyGoals], [myGoals, companyGoals]);
 
 
   const archivedMyGoals = goals.filter((g) => g.target_user_id === user?.id && !isActive(g));

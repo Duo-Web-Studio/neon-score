@@ -366,8 +366,9 @@ function CommissionHistorySection() {
   const { periods, currentMonths, loading, totals, refetch } = useCommissionHistory({ scope: "all" });
   const [closing, setClosing] = useState(false);
 
-  const { now } = useCurrentMonth();
-  const [selectedYear, setSelectedYear] = useState<number>(now.getFullYear());
+  const { monthKey } = useCurrentMonth();
+  const currentYear = Number(monthKey.split("-")[0]);
+  const [selectedYear, setSelectedYear] = useState<number>(currentYear);
   const [selectedMonth, setSelectedMonth] = useState<number | "all">("all");
 
   const fmt = (v: number) =>
@@ -375,9 +376,9 @@ function CommissionHistorySection() {
 
   const availableYears = useMemo(() => {
     const ys = new Set<number>(periods.map((p) => parseISO(p.period_start).getFullYear()));
-    ys.add(now.getFullYear());
+    ys.add(currentYear);
     return Array.from(ys).sort((a, b) => b - a);
-  }, [periods, now]);
+  }, [periods, currentYear]);
 
   const filteredPeriods = useMemo(() => {
     return periods.filter((p) => {

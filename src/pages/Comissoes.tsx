@@ -22,15 +22,16 @@ export default function Comissoes() {
   const [role, setRole] = useState<Role>("Closer");
   const { periods, currentMonths, loading, totals } = useCommissionHistory({ scope: "self" });
 
-  const { now } = useCurrentMonth();
-  const [selectedYear, setSelectedYear] = useState<number>(now.getFullYear());
+  const { monthKey } = useCurrentMonth();
+  const currentYear = Number(monthKey.split("-")[0]);
+  const [selectedYear, setSelectedYear] = useState<number>(currentYear);
   const [selectedMonth, setSelectedMonth] = useState<number | "all">("all");
 
   const availableYears = useMemo(() => {
     const ys = new Set<number>(periods.map((p) => parseISO(p.period_start).getFullYear()));
-    ys.add(now.getFullYear());
+    ys.add(currentYear);
     return Array.from(ys).sort((a, b) => b - a);
-  }, [periods, now]);
+  }, [periods, currentYear]);
 
   const filteredPeriods = useMemo(() => {
     return periods.filter((p) => {

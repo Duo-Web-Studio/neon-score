@@ -6,7 +6,6 @@ import { useAuth } from "@/hooks/useAuth";
 import { useDeals } from "@/hooks/useDeals";
 import { useCommissionRates } from "@/hooks/useCommissionRates";
 import { useCurrentMonth } from "@/hooks/useCurrentMonth";
-import { useCurrentWeek } from "@/hooks/useCurrentWeek";
 import { supabase } from "@/integrations/supabase/client";
 import { AppSidebar } from "@/components/dashboard/AppSidebar";
 import { FloatingHeader } from "@/components/dashboard/FloatingHeader";
@@ -134,7 +133,6 @@ const Index = () => {
   const { deals, loading: dealsLoading } = useDeals({ includeClosed: true });
   const { getRate, loading: ratesLoading } = useCommissionRates();
   const { monthStart, monthEnd, monthKey } = useCurrentMonth();
-  const { weekStart, weekEnd, weekKey } = useCurrentWeek();
   const [role, setRole] = useState<Role>("SDR");
   const [goal, setGoal] = useState<GoalData | null>(null);
   const [profileMap, setProfileMap] = useState<Map<string, string>>(new Map());
@@ -242,9 +240,7 @@ const Index = () => {
       if (diff >= 0 && diff < 7) buckets[diff].value++;
     });
     return buckets.map(({ name, value }) => ({ name, value }));
-    // weekKey força o recálculo quando a semana vira
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [deals, weekKey]);
+  }, [deals]);
 
   const sellers = useMemo(() => {
     const won = deals.filter(

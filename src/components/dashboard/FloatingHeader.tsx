@@ -3,6 +3,7 @@ import { Bell, User, LogOut } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import nextLogo from "@/assets/next-logo.jpg";
+import { AvatarImage } from "@/components/AvatarImage";
 
 type Role = "SDR" | "Closer";
 
@@ -78,7 +79,7 @@ export function FloatingHeader({ role, onRoleChange }: FloatingHeaderProps) {
             alt="Perfil"
             className="h-full w-full object-cover"
             fallback={<User className="h-4 w-4" />}
-          />namespace_placeholder
+          />
         </Link>
 
         <button

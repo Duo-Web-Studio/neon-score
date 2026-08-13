@@ -90,17 +90,16 @@ export function AvatarUploader({ onChanged }: Props) {
         .upload(path, blob, { upsert: true, contentType: "image/jpeg", cacheControl: "3600" });
       if (upErr) throw upErr;
 
-      const { data } = supabase.storage.from("avatars").getPublicUrl(path);
-      const url = `${data.publicUrl}?v=${Date.now()}`;
+      clearAvatarUrlCache(path);
 
       const { error: updErr } = await supabase
         .from("profiles")
-        .update({ avatar_url: url })
+        .update({ avatar_url: path })
         .eq("id", user.id);
       if (updErr) throw updErr;
 
-      setPreviewUrl(url);
-      onChanged?.(url);
+      setPreviewUrl(await resolveAvatarUrl(path));
+      onChanged?.(path);
       toast({ title: "Foto atualizada", description: "Sua foto de perfil foi atualizada." });
     } catch (e) {
       toast({ title: "Erro ao enviar", description: (e as Error).message ?? "Tente novamente.", variant: "destructive" });

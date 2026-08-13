@@ -1,0 +1,296 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 4%;
+    --foreground: 0 0% 100%;
+
+    --card: 0 0% 8%;
+    --card-foreground: 0 0% 100%;
+
+    --popover: 0 0% 8%;
+    --popover-foreground: 0 0% 100%;
+
+    --primary: 50 100% 50%;
+    --primary-foreground: 0 0% 4%;
+
+    --secondary: 33 100% 50%;
+    --secondary-foreground: 0 0% 4%;
+
+    --muted: 0 0% 10%;
+    --muted-foreground: 240 4% 66%;
+
+    --accent: 28 100% 48%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    --success: 142 71% 45%;
+    --success-foreground: 0 0% 100%;
+
+    --border: 0 0% 16%;
+    --input: 0 0% 16%;
+    --ring: 50 100% 50%;
+
+    --radius: 1rem;
+
+    --sidebar-background: 0 0% 5%;
+    --sidebar-foreground: 0 0% 100%;
+    --sidebar-primary: 50 100% 50%;
+    --sidebar-primary-foreground: 0 0% 4%;
+    --sidebar-accent: 0 0% 10%;
+    --sidebar-accent-foreground: 0 0% 100%;
+    --sidebar-border: 0 0% 16%;
+    --sidebar-ring: 50 100% 50%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+}
+
+@layer utilities {
+  .glass-card {
+    @apply bg-card/90 border border-border/50 rounded-2xl;
+    will-change: transform;
+  }
+
+  .glow-yellow {
+    box-shadow: 0 0 20px -5px hsl(50 100% 50% / 0.35);
+  }
+
+  .glow-orange {
+    box-shadow: 0 0 20px -5px hsl(33 100% 50% / 0.35);
+  }
+
+  .gradient-yellow-orange {
+    background: linear-gradient(135deg, #FFD600, #FF8F00);
+  }
+
+  .gradient-orange-strong {
+    background: linear-gradient(135deg, #FF8F00, #F57C00);
+  }
+
+  .gradient-text {
+    background: linear-gradient(135deg, #FFD600, #FF8F00);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .glow-sidebar {
+    box-shadow: 0 0 30px -10px hsl(50 100% 50% / 0.25), 0 0 15px -5px hsl(33 100% 50% / 0.15);
+  }
+
+  /* Hide scrollbar but keep scroll functionality */
+  .no-scrollbar {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+    width: 0;
+    height: 0;
+  }
+
+  /* Custom scrollbar for kanban board and horizontal filters */
+  .kanban-scroll {
+    scrollbar-width: thin;
+    scrollbar-color: hsl(var(--primary) / 0.5) transparent;
+  }
+
+  .kanban-scroll::-webkit-scrollbar {
+    height: 8px;
+    width: 8px;
+  }
+
+  .kanban-scroll::-webkit-scrollbar-track {
+    background: hsl(var(--muted) / 0.3);
+    border-radius: 999px;
+    margin: 0 8px;
+  }
+
+  .kanban-scroll::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, hsl(50 100% 50% / 0.7), hsl(33 100% 50% / 0.7));
+    border-radius: 999px;
+    border: 1px solid hsl(var(--background));
+  }
+
+  .kanban-scroll::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(135deg, hsl(50 100% 50%), hsl(33 100% 50%));
+    box-shadow: 0 0 10px hsl(50 100% 50% / 0.4);
+  }
+
+  .kanban-scroll::-webkit-scrollbar-corner {
+    background: transparent;
+  }
+
+  /* Modal vertical scrollbar — thin gradient */
+  .modal-scroll {
+    scrollbar-width: thin;
+    scrollbar-color: hsl(var(--primary) / 0.5) transparent;
+  }
+
+  .modal-scroll::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .modal-scroll::-webkit-scrollbar-track {
+    background: hsl(var(--muted) / 0.2);
+    border-radius: 999px;
+    margin: 8px 0;
+  }
+
+  .modal-scroll::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, hsl(50 100% 50% / 0.6), hsl(33 100% 50% / 0.6));
+    border-radius: 999px;
+  }
+
+  .modal-scroll::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, hsl(50 100% 50%), hsl(33 100% 50%));
+    box-shadow: 0 0 8px hsl(50 100% 50% / 0.4);
+  }
+}
+
+/* ============================================== */
+/* Global native browser scrollbar — brand styled */
+/* ============================================== */
+html {
+  scrollbar-width: thin;
+  scrollbar-color: hsl(var(--primary) / 0.6) hsl(var(--background));
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: hsl(var(--background));
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, hsl(50 100% 50% / 0.6), hsl(33 100% 50% / 0.6));
+  border-radius: 999px;
+  border: 2px solid hsl(var(--background));
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(135deg, hsl(50 100% 50%), hsl(33 100% 50%));
+  box-shadow: 0 0 10px hsl(50 100% 50% / 0.4);
+}
+
+::-webkit-scrollbar-corner {
+  background: hsl(var(--background));
+}
+
+/* ============================================== */
+/* Splash Screen animations                       */
+/* ============================================== */
+
+/* Stage A: Each arrow slides in from left */
+@keyframes splash-arrow-in {
+  0% { opacity: 0; transform: translateX(-40px) scale(0.85); }
+  60% { opacity: 1; }
+  100% { opacity: 1; transform: translateX(0) scale(1); }
+}
+
+/* Stage A end: Arrows shoot right and fade out */
+@keyframes splash-arrow-out {
+  0% { opacity: 1; transform: translateX(0); filter: blur(0); }
+  100% { opacity: 0; transform: translateX(140px); filter: blur(6px); }
+}
+
+/* Stage B: Logo card scale in */
+@keyframes splash-logo-in {
+  0% { opacity: 0; transform: scale(0.85); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+/* Stage C: Name wrap fades in */
+@keyframes splash-name-in {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+/* Stage C: Sweep line under name */
+@keyframes splash-sweep {
+  0% { transform: translateX(-110%); }
+  100% { transform: translateX(110%); }
+}
+
+/* Stage C: Text clip-path reveal */
+@keyframes splash-text-reveal {
+  0% { clip-path: inset(0 100% 0 0); opacity: 0; }
+  20% { opacity: 1; }
+  100% { clip-path: inset(0 0 0 0); opacity: 1; }
+}
+
+/* Idle breathing on text */
+@keyframes splash-breathe {
+  0%, 100% { filter: drop-shadow(0 0 8px hsl(50 100% 50% / 0.3)); }
+  50% { filter: drop-shadow(0 0 16px hsl(33 100% 50% / 0.5)); }
+}
+
+/* Setas já entram visíveis no React (a entrada acontece no boot estático do index.html). Aqui só animamos a SAÍDA. */
+.splash-arrow {
+  opacity: 1;
+  will-change: transform, filter;
+  animation: splash-arrow-out 400ms cubic-bezier(0.7, 0, 0.84, 0) both;
+}
+.splash-arrow-1 { animation-delay: 960ms; }
+.splash-arrow-2 { animation-delay: 1010ms; }
+.splash-arrow-3 { animation-delay: 1060ms; }
+
+.splash-logo {
+  opacity: 0;
+  will-change: transform, opacity;
+  animation: splash-logo-in 450ms cubic-bezier(0.22, 1, 0.36, 1) 1380ms both;
+}
+
+.splash-name-wrap {
+  opacity: 0;
+  animation: splash-name-in 220ms ease-out 1700ms both;
+}
+
+.splash-sweep-line {
+  transform: translateX(-110%);
+  will-change: transform;
+  animation: splash-sweep 650ms cubic-bezier(0.65, 0, 0.35, 1) 1740ms both;
+}
+
+.splash-text {
+  clip-path: inset(0 100% 0 0);
+  opacity: 0;
+  will-change: clip-path, opacity, filter;
+  animation:
+    splash-text-reveal 600ms cubic-bezier(0.65, 0, 0.35, 1) 1780ms both,
+    splash-breathe 3s ease-in-out 2480ms infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .splash-arrow,
+  .splash-logo,
+  .splash-name-wrap,
+  .splash-sweep-line,
+  .splash-text {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+    clip-path: none !important;
+    filter: none !important;
+  }
+  .splash-arrow,
+  .splash-arrow-inner { display: none !important; }
+}
+

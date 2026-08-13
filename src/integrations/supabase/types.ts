@@ -446,13 +446,6 @@ export type Database = {
             Returns: number
           }
       get_profile_status: { Args: { _user_id: string }; Returns: string }
-      has_role: {
-        Args: {
-          _role: Database["public"]["Enums"]["app_role"]
-          _user_id: string
-        }
-        Returns: boolean
-      }
       rollover_commissions: { Args: never; Returns: number }
       rollover_monthly_goals: { Args: never; Returns: number }
     }

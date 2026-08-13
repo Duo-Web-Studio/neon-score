@@ -242,7 +242,7 @@ const Index = () => {
       if (diff >= 0 && diff < 7) buckets[diff].value++;
     });
     return buckets.map(({ name, value }) => ({ name, value }));
-  }, [deals, weekKey]);
+  }, [deals]);
 
   const sellers = useMemo(() => {
     const won = deals.filter(

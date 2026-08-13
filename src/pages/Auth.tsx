@@ -257,26 +257,9 @@ export default function Auth() {
           </div>
 
           {tab === "signup" && (
-            <div>
-              <label className="mb-2 block text-sm font-medium text-foreground">Cargo</label>
-              <div className="flex gap-4">
-                <label className="flex items-center gap-2 cursor-pointer">
-                  <Checkbox
-                    checked={selectedRoles.includes("sdr")}
-                    onCheckedChange={() => toggleRole("sdr")}
-                  />
-                  <span className="text-sm text-foreground">SDR</span>
-                </label>
-                <label className="flex items-center gap-2 cursor-pointer">
-                  <Checkbox
-                    checked={selectedRoles.includes("closer")}
-                    onCheckedChange={() => toggleRole("closer")}
-                  />
-                  <span className="text-sm text-foreground">Closer</span>
-                </label>
-              </div>
-              <p className="mt-1 text-xs text-muted-foreground">Selecione um ou ambos</p>
-            </div>
+            <p className="rounded-xl border border-border/50 bg-muted/30 px-4 py-3 text-xs text-muted-foreground">
+              Seu cargo (SDR ou Closer) será definido pelo administrador ao aprovar o acesso.
+            </p>
           )}
 
           <button
